@@ -9,18 +9,19 @@ export const ProductContext = createContext({} as ProductContextProps);
 const { Provider } = ProductContext;
 
 
-
 export interface Props {
-    product: Product;
     children?: React.ReactElement | React.ReactElement[];
     className?: string;
-    style?: React.CSSProperties 
+    onChange?: ( counter:number, product:Product) => void;
+    product: Product;
+    style?: React.CSSProperties;
+    value?: number
 }
 
 
-export const ProductCard = ({ children, product, className, style }: Props ) => {
+export const ProductCard = ({ children, product, className, style, onChange, value = 0 }: Props ) => {
 
-    const { counter, increaseBy } = useProduct();
+    const { counter, increaseBy } = useProduct( { onChange, product, value });
 
     return (
         <Provider value={{
@@ -30,9 +31,8 @@ export const ProductCard = ({ children, product, className, style }: Props ) => 
         }}>
             <div 
                 className={ `${ styles.productCard } ${ className }` }
-                style={ style }
-            >
-                { children }
+                style={ style }>
+                    { children }
             </div>
         </Provider>
     )
